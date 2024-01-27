@@ -94,15 +94,6 @@ class GraphUtilTest {
         var dependencies = new ArrayList<String>();
         var topologicalOrder = new TopologicalOrderIterator<>(graph);
         topologicalOrder.forEachRemaining(dependencies::add);
-        /*
-        topologicalOrder.forEachRemaining(v -> {
-            var incomingSet = graph.incomingEdgesOf(v);
-            if (!incomingSet.isEmpty()) {
-                dependencies.add(v);
-            }
-        });
-
-         */
 
         System.out.println(dependencies);
         System.out.println("---------------------");
@@ -138,14 +129,6 @@ class GraphUtilTest {
     }
 
     @Test
-    void getDmnNameDependencies() {
-    }
-
-    @Test
-    void testGetDmnNameDependencies() {
-    }
-
-    @Test
     void getDmnNameDependenciesOrdered() {
         Mockito.when(graphUtil.getGraph(ConditionType.VALUE)).thenReturn(graph);
 
@@ -163,19 +146,11 @@ class GraphUtilTest {
     }
 
     @Test
-    void getAllDmnNameDependencies() {
-    }
-
-    @Test
     void getAllDmnNameDependenciesOverloading() {
         Mockito.when(graphUtil.getGraph(ConditionType.ALERT)).thenReturn(graph);
 
         var initialNodes = Set.of("b", "e");
         var dependencies = graphUtil.getAllDmnNameDependencies(ConditionType.ALERT, initialNodes);
         assertTrue(dependencies.size() > 0);
-    }
-
-    @Test
-    void getGraph() {
     }
 }

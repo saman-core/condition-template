@@ -15,7 +15,6 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Startup
 @ApplicationScoped
@@ -43,7 +42,6 @@ public class ConditionTypeStartup {
                         return Arrays.stream(split).reduce((first, second) -> second).orElse("").replaceAll("(?i)\\.dmn", "");
                     })
                     .distinct()
-                    .peek(log::info)
                     .toList();
 
             generateDependencies(dmnNames, ConditionType.VISIBLE);
@@ -69,7 +67,7 @@ public class ConditionTypeStartup {
                     var inputs = decision.getDMNModel().getInputs().stream()
                             .map(DMNNode::getName)
                             .map(String::toLowerCase)
-                            .collect(Collectors.toList());
+                            .toList();
 
                     log.info("dependencies: " + propertyName);
                     log.info("dependencies: " + inputs);
