@@ -1,4 +1,4 @@
-name: CI-CD-CONDITION-TEMPLATE
+name: CI-CD-CONDITIONS
 on:
   workflow_dispatch:
     inputs:
@@ -21,7 +21,7 @@ env:
   EKS_CLUSTER_NAME: my-cluster
   AWS_REGION: us-east-1
   N_REPLICA: 1
-  DEPLOY_HASH: ""
+  DEPLOY_HASH: ''
 
 jobs:
   build_contenizer:
@@ -42,6 +42,8 @@ jobs:
         with:
           repository: saman-core/product-ops
           path: product-ops
+
+      - name: Set env DEPLOY_HASH
         run: |
           cd product-ops/
           DEPLOY_HASH=$(git rev-parse HEAD)
