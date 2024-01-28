@@ -51,7 +51,7 @@ jobs:
 
       - name: Copy files
         run: |
-          cp product-ops/$(echo $PRODUCT)/templates/$(echo $TEMPLATE)/conditions/* condition-template/src/main/resources/
+          cp product-ops/$(echo $PRODUCT)/templates/$(echo $TEMPLATE)/conditions/* ./src/main/resources/
           ls src/main/resources/
 
       - name: Setup graalvm
@@ -86,7 +86,7 @@ jobs:
           context: ./
           file: ./src/main/docker/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.ACTOR }}/${{ env.IMAGE_APP_NAME }}:${{ github.sha }}
+          tags: ${{ env.REGISTRY }}/${{ env.ACTOR }}/${{ env.IMAGE_APP_NAME }}:${{ env.DEPLOY_HASH }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
