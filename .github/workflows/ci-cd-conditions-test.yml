@@ -1,0 +1,34 @@
+name: CI-CD-CONDITIONS-TEST
+on:
+  workflow_dispatch:
+    inputs:
+      product:
+        description: 'Product name'
+        required: true
+        type: string
+      template:
+        description: 'Template name'
+        required: true
+        type: string
+
+env:
+  PRODUCT: ${{ inputs.product }}
+  TEMPLATE: ${{ inputs.template }}
+  REGISTRY: ghcr.io
+  ACTOR: saman-core
+  IMAGE_APP_NAME: conditions-${{ inputs.product }}-${{ inputs.template }}
+  APP_NAME: conditions-${{ inputs.product }}-${{ inputs.template }}
+  EKS_CLUSTER_NAME: my-cluster
+  AWS_REGION: us-east-1
+  N_REPLICA: 1
+
+jobs:
+  build_contenizer:
+    name: Build & Contenerize App
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Log inputs
+        run: |
+          echo "Product: $PRODUCT"
+          echo "Template: $TEMPLATE"
