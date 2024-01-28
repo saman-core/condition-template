@@ -21,7 +21,6 @@ env:
   EKS_CLUSTER_NAME: my-cluster
   AWS_REGION: us-east-1
   N_REPLICA: 1
-  DEPLOY_HASH: ''
 
 jobs:
   build_contenizer:
@@ -46,8 +45,12 @@ jobs:
       - name: Set env DEPLOY_HASH
         run: |
           cd product-ops/
-          DEPLOY_HASH=$(git rev-parse HEAD)
+          echo "DEPLOY_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
           cd ..
+
+      - name: Log DEPLOY_HASH
+        run: |
+          echo "DEPLOY_HASH: $DEPLOY_HASH"
 
       - name: Copy files
         run: |
