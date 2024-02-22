@@ -36,15 +36,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Checkout product-ops
+      - name: Checkout product-repository
         uses: actions/checkout@v4
         with:
-          repository: saman-core/product-ops
-          path: product-ops
+          repository: saman-core/product-repository
+          path: product-repository
 
       - name: Set env DEPLOY_HASH
         run: |
-          cd product-ops/
+          cd product-repository/
           echo "DEPLOY_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
           cd ..
 
@@ -54,7 +54,7 @@ jobs:
 
       - name: Copy files
         run: |
-          cp product-ops/$(echo $PRODUCT)/templates/$(echo $TEMPLATE)/conditions/* ./src/main/resources/
+          cp product-repository/$(echo $PRODUCT)/templates/$(echo $TEMPLATE)/conditions/* ./src/main/resources/
           ls src/main/resources/
 
       - name: Setup graalvm
