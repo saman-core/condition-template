@@ -35,7 +35,7 @@ public class ConditionTypeStartup {
             var resource = url.getPath().replace("/undeleteme.txt", "");
             log.info("resource: " + resource);
 
-            var dmnNames = Files.walk(Path.of(resource))
+            List<String> dmnNames = Files.walk(Path.of(resource))
                     .filter(p -> p.toString().toLowerCase().endsWith(".dmn"))
                     .map(p -> {
                         var split = p.toString().split("/");
@@ -48,6 +48,7 @@ public class ConditionTypeStartup {
             generateDependencies(dmnNames, ConditionType.VALUE);
             generateDependencies(dmnNames, ConditionType.DISABLE);
             generateDependencies(dmnNames, ConditionType.ALERT);
+            generateDependencies(dmnNames, ConditionType.VALIDATE);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }

@@ -10,7 +10,8 @@ public enum ConditionType {
     VALUE(0, true, "_value", new HashMap<>(), new DefaultDirectedGraph<>(String.class)),
     VISIBLE(1, false, "_visible", new HashMap<>(), new DefaultDirectedGraph<>(String.class)),
     DISABLE(2, false, "_disable", new HashMap<>(), new DefaultDirectedGraph<>(String.class)),
-    ALERT(3, false, "_alert", new HashMap<>(), new DefaultDirectedGraph<>(String.class));
+    ALERT(3, false, "_alert", new HashMap<>(), new DefaultDirectedGraph<>(String.class)),
+    VALIDATE(4, false, "_validate", new HashMap<>(), new DefaultDirectedGraph<>(String.class));
 
     private final int value;
     private final boolean isUpdateCascade;

@@ -39,6 +39,9 @@ public class ConditionService {
         conditions.addAll(
                 getConditionsByType(ConditionType.ALERT, isInitial, variables, modifiedProperties)
         );
+        conditions.addAll(
+                getConditionsByType(ConditionType.VALIDATE, isInitial, variables, modifiedProperties)
+        );
 
         return conditions;
     }
