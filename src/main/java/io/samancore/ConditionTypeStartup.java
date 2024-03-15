@@ -21,7 +21,7 @@ import java.util.List;
 public class ConditionTypeStartup {
     private static final Logger log = Logger.getLogger(ConditionTypeStartup.class);
 
-    @ConfigProperty(name = "condition.namespace", defaultValue = "ok")
+    @ConfigProperty(name = "condition.namespace", defaultValue = "saman-core")
     String namespace;
 
     @Inject()
