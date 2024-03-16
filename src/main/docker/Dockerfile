@@ -11,9 +11,12 @@ COPY --from=ubi /usr/lib64/libz.so.1 /usr/lib64/libz.so.1
 
 WORKDIR /work/
 RUN mkdir /work/classes
-RUN chown 1001 -R /work \
-    && chmod "g+rwX" -R /work \
-    && chown 1001:root -R /work
+RUN chown 1001 /work \
+    && chmod "g+rwX" /work \
+    && chown 1001:root /work
+RUN chown 1001 /work/classes \
+    && chmod "g+rwX" /work/classes \
+    && chown 1001:root /work/classes
 COPY --chown=1001:root target/*-runner /work/application
 COPY --chown=1001:root target/classes/undeleteme.txt /work/classes/undeleteme.txt
 COPY --chown=1001:root target/classes/*.dmn /work/classes/
