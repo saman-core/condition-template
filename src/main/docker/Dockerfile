@@ -16,10 +16,12 @@ RUN chown 1001 /work \
 COPY --chown=1001:root target/*-runner /work/application
 
 RUN mkdir /work/classes
-RUN chown 1001:root /work/classes
+RUN chown 1001 /work/classes \
+        && chmod "g+rwX" /work/classes \
+        && chown 1001:root /work/classes
 COPY --chown=1001:root target/classes/undeleteme.txt /work/classes/undeleteme.txt
 COPY --chown=1001:root target/classes/*.dmn /work/classes/
-RUN chmod 444 -R /work/classes
+RUN chmod 444 -R /work/classes/*
 
 
 EXPOSE 8080
