@@ -10,19 +10,13 @@ COPY --from=ubi /usr/lib64/libstdc++.so.6 /usr/lib64/libstdc++.so.6
 COPY --from=ubi /usr/lib64/libz.so.1 /usr/lib64/libz.so.1
 
 WORKDIR /work/
-RUN chown 1001 /work \
-    && chmod "g+rwX" /work \
-    && chown 1001:root /work
-COPY --chown=1001:root target/*-runner /work/application
-
 RUN mkdir /work/classes
-RUN chown 1001 /work/classes \
-        && chmod "g+rwX" /work/classes \
-        && chown 1001:root /work/classes
+RUN chown 1001 -R /work \
+    && chmod "g+rwX" -R /work \
+    && chown 1001:root -R /work
+COPY --chown=1001:root target/*-runner /work/application
 COPY --chown=1001:root target/classes/undeleteme.txt /work/classes/undeleteme.txt
 COPY --chown=1001:root target/classes/*.dmn /work/classes/
-RUN chmod 444 -R /work/classes/*
-
 
 EXPOSE 8080
 USER 1001
