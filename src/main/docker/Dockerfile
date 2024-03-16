@@ -14,6 +14,11 @@ RUN chown 1001 /work \
     && chmod "g+rwX" /work \
     && chown 1001:root /work
 COPY --chown=1001:root target/*-runner /work/application
+RUN mkdir /work/classes
+COPY --chown=1001:root target/classes/undeleteme.txt /work/classes/undeleteme.txt
+COPY --chown=1001:root target/classes/*.dmn /work/classes/
+RUN chmod 440 -R /work/classes
+
 
 EXPOSE 8080
 USER 1001
