@@ -62,7 +62,8 @@ public class ConditionService {
         dmnNameList.forEach(dmnName -> {
             var result = dmnUtil.execute(conditionType, dmnName, variables, entry);
             var condition = createCondition(dmnName, conditionType, result);
-            conditions.add(condition);
+            if (condition.getValue() != null)
+                conditions.add(condition);
 
             if (conditionType.isUpdateCascade()) {
                 variables.put(dmnName, result);
