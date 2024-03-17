@@ -63,7 +63,7 @@ public class ConditionTypeStartup {
                 .forEach(dmnName -> {
                     DecisionModel decision = application.get(org.kie.kogito.decision.DecisionModels.class).getDecisionModel(namespace, dmnName);
 
-                    var propertyName = dmnName.toLowerCase().substring(0, dmnName.length() - finalLength);
+                    var propertyName = dmnName.substring(0, dmnName.length() - finalLength);
                     type.getModels().put(propertyName, decision);
                     var inputs = decision.getDMNModel().getInputs().stream()
                             .map(DMNNode::getName)
