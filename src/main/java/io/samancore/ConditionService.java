@@ -24,6 +24,7 @@ public class ConditionService {
     public List<Condition> eval(ConditionRequest conditionRequest) {
         var conditions = new ArrayList<Condition>();
         var variables = conditionRequest.getVariables();
+        fillVariables(variables);
         var modifiedProperties = conditionRequest.getModifiedProperties();
         var isInitial = conditionRequest.isInitial();
 
@@ -44,6 +45,10 @@ public class ConditionService {
         );
 
         return conditions;
+    }
+
+    protected void fillVariables(Map<String, Object> variables) {
+        DmnDependencies.INPUTS.forEach(input -> variables.putIfAbsent(input, null));
     }
 
     protected List<Condition> getConditionsByType(final ConditionType conditionType,

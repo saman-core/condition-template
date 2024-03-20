@@ -12,6 +12,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +25,7 @@ public class ConditionTypeStartup {
     @ConfigProperty(name = "condition.namespace", defaultValue = "saman-core")
     String namespace;
 
-    @Inject()
+    @Inject
     Application application;
 
     @PostConstruct
@@ -43,6 +44,7 @@ public class ConditionTypeStartup {
                     })
                     .distinct()
                     .toList();
+            DmnDependencies.INPUTS.addAll(returnAllDependencies(dmnNames));
 
             generateDependencies(dmnNames, ConditionType.VISIBLE);
             generateDependencies(dmnNames, ConditionType.VALUE);
@@ -54,7 +56,19 @@ public class ConditionTypeStartup {
         }
     }
 
-    private void generateDependencies(List<String> dmnNames, ConditionType type) {
+    protected List<String> returnAllDependencies(List<String> dmnNames) {
+        var dependencies = new ArrayList<String>();
+        dmnNames.forEach(dmnName -> {
+            DecisionModel decision = application.get(org.kie.kogito.decision.DecisionModels.class).getDecisionModel(namespace, dmnName);
+            var inputs = decision.getDMNModel().getInputs().stream()
+                    .map(DMNNode::getName)
+                    .toList();
+            dependencies.addAll(inputs);
+        });
+        return dependencies;
+    }
+
+    protected void generateDependencies(List<String> dmnNames, ConditionType type) {
         var finalLength = type.getSuffix().length();
         var dependencies = new HashMap<String, List<String>>();
 
@@ -67,7 +81,6 @@ public class ConditionTypeStartup {
                     type.getModels().put(propertyName, decision);
                     var inputs = decision.getDMNModel().getInputs().stream()
                             .map(DMNNode::getName)
-                            .map(String::toLowerCase)
                             .toList();
 
                     log.info("dependencies: " + propertyName);
@@ -84,7 +97,7 @@ public class ConditionTypeStartup {
         );
     }
 
-    private static boolean isConditionDmn(String dmnName, String type) {
+    protected static boolean isConditionDmn(String dmnName, String type) {
         var nameLowerCase = dmnName.toLowerCase();
         return nameLowerCase.endsWith(type);
     }
