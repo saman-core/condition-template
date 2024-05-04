@@ -6,6 +6,8 @@ metadata:
     app: APP_NAME
     version: v-APP_VERSION
   name: APP_NAME
+  annotations:
+    deployHash: "DEPLOY_HASH"
 spec:
   replicas: N_REPLICA
   selector:
