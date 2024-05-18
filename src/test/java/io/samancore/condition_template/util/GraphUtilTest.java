@@ -1,7 +1,9 @@
-package io.samancore;
+package io.samancore.condition_template.util;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.mockito.InjectSpy;
+import io.samancore.common.model.condition.ConditionType;
+import io.samancore.condition_template.util.GraphUtil;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.traverse.DepthFirstIterator;
 import org.jgrapht.traverse.TopologicalOrderIterator;

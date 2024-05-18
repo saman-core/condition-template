@@ -1,8 +1,11 @@
-package io.samancore;
+package io.samancore.condition_template.model;
 
 import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
+
+import java.util.Map;
+import java.util.Set;
 
 @Value
 @Jacksonized
@@ -11,8 +14,8 @@ import lombok.extern.jackson.Jacksonized;
         builderMethodName = "newBuilder",
         toBuilder = true
 )
-public class Condition {
-    String property;
-    ConditionType conditionType;
-    Object value;
+public class ConditionRequest {
+    Map<String, Object> variables;
+    Set<String> modifiedProperties;
+    boolean isInitial;
 }

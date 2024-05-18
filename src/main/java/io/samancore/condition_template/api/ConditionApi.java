@@ -1,4 +1,8 @@
-package io.samancore;
+package io.samancore.condition_template.api;
+
+import io.samancore.condition_template.model.Condition;
+import io.samancore.condition_template.model.ConditionRequest;
+import io.samancore.condition_template.service.ConditionService;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -13,7 +17,7 @@ import java.util.List;
 @Path("/conditions")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class ConditionResource {
+public class ConditionApi {
 
     @Inject
     ConditionService service;

@@ -19,6 +19,7 @@
     <lombok.version>1.18.30</lombok.version>
     <swagger-annotations.version>2.2.20</swagger-annotations.version>
     <jgrapht-core.version>1.5.2</jgrapht-core.version>
+    <common-model.version>0.0.2</common-model.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -54,6 +55,11 @@
       <groupId>io.swagger.core.v3</groupId>
       <artifactId>swagger-annotations</artifactId>
       <version>${swagger-annotations.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.samancore</groupId>
+      <artifactId>common-model</artifactId>
+      <version>${common-model.version}</version>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>

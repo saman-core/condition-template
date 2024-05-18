@@ -1,4 +1,4 @@
-package io.samancore;
+package io.samancore.condition_template.api;
 
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;

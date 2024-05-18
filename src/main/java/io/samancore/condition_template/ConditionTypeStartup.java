@@ -1,6 +1,8 @@
-package io.samancore;
+package io.samancore.condition_template;
 
 import io.quarkus.runtime.Startup;
+import io.samancore.condition_template.constant.InstanceConstants;
+import io.samancore.common.model.condition.ConditionType;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 import org.kie.dmn.api.core.ast.DMNNode;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Startup
 @ApplicationScoped
@@ -31,12 +34,15 @@ public class ConditionTypeStartup {
     @PostConstruct
     public void init() {
         log.info("INIT ConditionTypeStartup");
+        Stream<Path> paths = null;
         try {
             var url = Thread.currentThread().getContextClassLoader().getResource("undeleteme.txt");
+            assert url != null;
             var resource = url.getPath().replace("/undeleteme.txt", "");
             log.info("resource: " + resource);
 
-            List<String> dmnNames = Files.walk(Path.of(resource))
+            paths = Files.walk(Path.of(resource));
+            List<String> dmnNames = paths
                     .filter(p -> p.toString().toLowerCase().endsWith(".dmn"))
                     .map(p -> {
                         var split = p.toString().split("/");
@@ -44,15 +50,16 @@ public class ConditionTypeStartup {
                     })
                     .distinct()
                     .toList();
-            DmnDependencies.INPUTS.addAll(returnAllDependencies(dmnNames));
+            InstanceConstants.DMN_INPUTS.addAll(returnAllDependencies(dmnNames));
 
-            generateDependencies(dmnNames, ConditionType.VISIBLE);
-            generateDependencies(dmnNames, ConditionType.VALUE);
-            generateDependencies(dmnNames, ConditionType.DISABLE);
-            generateDependencies(dmnNames, ConditionType.ALERT);
-            generateDependencies(dmnNames, ConditionType.VALIDATE);
+            Arrays.stream(ConditionType.values())
+                    .toList()
+                    .forEach(conditionType -> generateDependencies(dmnNames, conditionType));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
+        } finally {
+            if (paths != null)
+                paths.close();
         }
     }
 
@@ -69,16 +76,16 @@ public class ConditionTypeStartup {
     }
 
     protected void generateDependencies(List<String> dmnNames, ConditionType type) {
-        var finalLength = type.getSuffix().length();
+        var finalLength = InstanceConstants.CONDITION_GRAPHS.get(type).getSuffix().length();
         var dependencies = new HashMap<String, List<String>>();
 
         dmnNames.stream()
-                .filter(dmnName -> isConditionDmn(dmnName, type.getSuffix()))
+                .filter(dmnName -> isConditionDmn(dmnName, InstanceConstants.CONDITION_GRAPHS.get(type).getSuffix()))
                 .forEach(dmnName -> {
                     DecisionModel decision = application.get(org.kie.kogito.decision.DecisionModels.class).getDecisionModel(namespace, dmnName);
 
                     var propertyName = dmnName.substring(0, dmnName.length() - finalLength);
-                    type.getModels().put(propertyName, decision);
+                    InstanceConstants.CONDITION_GRAPHS.get(type).getModels().put(propertyName, decision);
                     var inputs = decision.getDMNModel().getInputs().stream()
                             .map(DMNNode::getName)
                             .toList();
@@ -89,11 +96,11 @@ public class ConditionTypeStartup {
                 });
 
         dependencies.forEach((target, value) -> {
-            type.getGraph().addVertex(target);
-            value.forEach(source -> type.getGraph().addVertex(source));
+            InstanceConstants.CONDITION_GRAPHS.get(type).getGraph().addVertex(target);
+            value.forEach(source -> InstanceConstants.CONDITION_GRAPHS.get(type).getGraph().addVertex(source));
         });
         dependencies.forEach((target, value) ->
-                value.forEach(source -> type.getGraph().addEdge(source, target, source.concat("_").concat(target)))
+                value.forEach(source -> InstanceConstants.CONDITION_GRAPHS.get(type).getGraph().addEdge(source, target, source.concat("_").concat(target)))
         );
     }
 

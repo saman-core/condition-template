@@ -1,5 +1,7 @@
-package io.samancore;
+package io.samancore.condition_template.util;
 
+import io.samancore.condition_template.constant.InstanceConstants;
+import io.samancore.common.model.condition.ConditionType;
 import org.kie.kogito.decision.DecisionModel;
 import org.kie.kogito.dmn.rest.DMNJSONUtils;
 
@@ -20,6 +22,6 @@ public class DmnUtil {
     }
 
     protected DecisionModel getModelByName(ConditionType type, String name) {
-        return type.getModels().get(name);
+        return InstanceConstants.CONDITION_GRAPHS.get(type).getModels().get(name);
     }
 }

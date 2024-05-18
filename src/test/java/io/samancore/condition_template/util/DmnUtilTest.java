@@ -1,6 +1,8 @@
-package io.samancore;
+package io.samancore.condition_template.util;
 
 import io.quarkus.test.junit.QuarkusTest;
+import io.samancore.common.model.condition.ConditionType;
+import io.samancore.condition_template.util.DmnUtil;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;

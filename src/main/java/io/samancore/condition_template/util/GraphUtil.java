@@ -1,5 +1,7 @@
-package io.samancore;
+package io.samancore.condition_template.util;
 
+import io.samancore.condition_template.constant.InstanceConstants;
+import io.samancore.common.model.condition.ConditionType;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.traverse.DepthFirstIterator;
 import org.jgrapht.traverse.TopologicalOrderIterator;
@@ -12,7 +14,7 @@ import java.util.stream.Stream;
 public class GraphUtil {
 
     public List<String> getDmnNameDependencies(ConditionType type) {
-        if (type.isUpdateCascade()) {
+        if (InstanceConstants.CONDITION_GRAPHS.get(type).isUpdateCascade()) {
             return getDmnNameDependenciesOrdered(type);
         } else {
             return getAllDmnNameDependencies(type);
@@ -20,7 +22,7 @@ public class GraphUtil {
     }
 
     public List<String> getDmnNameDependencies(ConditionType type, Set<String> initialNodes) {
-        if (type.isUpdateCascade()) {
+        if (InstanceConstants.CONDITION_GRAPHS.get(type).isUpdateCascade()) {
             return getDmnNameDependenciesOrdered(type, initialNodes);
         } else {
             return getAllDmnNameDependencies(type, initialNodes);
@@ -41,7 +43,7 @@ public class GraphUtil {
     }
 
     protected List<String> getAllDmnNameDependencies(ConditionType type) {
-        return new ArrayList<>(type.getModels().keySet());
+        return new ArrayList<>(InstanceConstants.CONDITION_GRAPHS.get(type).getModels().keySet());
     }
 
     protected List<String> getDmnNameDependenciesOrdered(ConditionType type, Set<String> initialNodes) {
@@ -87,7 +89,7 @@ public class GraphUtil {
     }
 
     protected DefaultDirectedGraph<String, String> getGraph(ConditionType type) {
-        return type.getGraph();
+        return InstanceConstants.CONDITION_GRAPHS.get(type).getGraph();
     }
 
     protected static class Order<E> implements Comparator<E> {

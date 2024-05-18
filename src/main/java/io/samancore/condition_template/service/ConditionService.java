@@ -1,5 +1,11 @@
-package io.samancore;
+package io.samancore.condition_template.service;
 
+import io.samancore.condition_template.constant.InstanceConstants;
+import io.samancore.condition_template.model.Condition;
+import io.samancore.condition_template.model.ConditionRequest;
+import io.samancore.common.model.condition.ConditionType;
+import io.samancore.condition_template.util.DmnUtil;
+import io.samancore.condition_template.util.GraphUtil;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -43,12 +49,15 @@ public class ConditionService {
         conditions.addAll(
                 getConditionsByType(ConditionType.VALIDATE, isInitial, variables, modifiedProperties)
         );
+        conditions.addAll(
+                getConditionsByType(ConditionType.OPTIONS, isInitial, variables, modifiedProperties)
+        );
 
         return conditions;
     }
 
     protected void fillVariables(Map<String, Object> variables) {
-        DmnDependencies.INPUTS.forEach(input -> variables.putIfAbsent(input, null));
+        InstanceConstants.DMN_INPUTS.forEach(input -> variables.putIfAbsent(input, null));
     }
 
     protected List<Condition> getConditionsByType(final ConditionType conditionType,
@@ -70,7 +79,7 @@ public class ConditionService {
             if (condition.getValue() != null)
                 conditions.add(condition);
 
-            if (conditionType.isUpdateCascade()) {
+            if (InstanceConstants.CONDITION_GRAPHS.get(conditionType).isUpdateCascade()) {
                 variables.put(dmnName, result);
                 modifiedProperties.add(dmnName);
             }
