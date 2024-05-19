@@ -1,8 +1,8 @@
 package io.samancore.condition_template.service;
 
 import io.samancore.condition_template.constant.InstanceConstants;
-import io.samancore.condition_template.model.Condition;
-import io.samancore.condition_template.model.ConditionRequest;
+import io.samancore.common.model.condition.Condition;
+import io.samancore.common.model.condition.ConditionRequest;
 import io.samancore.common.model.condition.ConditionType;
 import io.samancore.condition_template.util.DmnUtil;
 import io.samancore.condition_template.util.GraphUtil;

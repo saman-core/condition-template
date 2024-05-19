@@ -1,7 +1,7 @@
 package io.samancore.condition_template.api;
 
-import io.samancore.condition_template.model.Condition;
-import io.samancore.condition_template.model.ConditionRequest;
+import io.samancore.common.model.condition.Condition;
+import io.samancore.common.model.condition.ConditionRequest;
 import io.samancore.condition_template.service.ConditionService;
 
 import javax.annotation.security.RolesAllowed;
