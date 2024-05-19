@@ -4,6 +4,7 @@ import io.samancore.condition_template.model.Condition;
 import io.samancore.condition_template.model.ConditionRequest;
 import io.samancore.condition_template.service.ConditionService;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -23,6 +24,7 @@ public class ConditionApi {
     ConditionService service;
 
     @POST
+    @RolesAllowed({"admin"})
     @Path("/eval")
     public List<Condition> eval(ConditionRequest initialConditionRequest) {
         var conditionRequestBuilder = initialConditionRequest.toBuilder();

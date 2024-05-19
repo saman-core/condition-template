@@ -66,6 +66,20 @@ jobs:
           native-image-job-reports: 'true'
           version: '22.3.3.1-Final'
 
+      - name: Set env
+        env:
+          BASE64: ${{ secrets.ENV_FILE }}
+        run: |
+          base64 -d -i <<<$(echo $BASE64) > .env
+
+      - name: Set settings.xml
+        env:
+          SETTINGS_XML: ${{ secrets.SETTINGS_XML }}
+          TOKEN: ${{ secrets.GIT_TOKEN }}
+        run: |
+          base64 -d -i <<<$(echo $SETTINGS_XML) > settings.xml
+          sed -i -e 's/OWNER/${{ env.ACTOR }}/g' -e 's/TOKEN/${{ env.TOKEN }}/g' ./settings.xml
+
       - name: Build native app
         run: |
           ./mvnw package -Dnative -DskipTests
