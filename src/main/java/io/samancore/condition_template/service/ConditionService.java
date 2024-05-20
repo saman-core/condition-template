@@ -38,20 +38,22 @@ public class ConditionService {
                 getConditionsByType(ConditionType.VALUE, isInitial, variables, modifiedProperties)
         );
         conditions.addAll(
-                getConditionsByType(ConditionType.VISIBLE, isInitial, variables, modifiedProperties)
-        );
-        conditions.addAll(
-                getConditionsByType(ConditionType.DISABLE, isInitial, variables, modifiedProperties)
-        );
-        conditions.addAll(
-                getConditionsByType(ConditionType.ALERT, isInitial, variables, modifiedProperties)
-        );
-        conditions.addAll(
                 getConditionsByType(ConditionType.VALIDATE, isInitial, variables, modifiedProperties)
         );
-        conditions.addAll(
-                getConditionsByType(ConditionType.OPTIONS, isInitial, variables, modifiedProperties)
-        );
+        if (conditionRequest.getWithoutPresentation() == null || !conditionRequest.getWithoutPresentation()) {
+            conditions.addAll(
+                    getConditionsByType(ConditionType.VISIBLE, isInitial, variables, modifiedProperties)
+            );
+            conditions.addAll(
+                    getConditionsByType(ConditionType.DISABLE, isInitial, variables, modifiedProperties)
+            );
+            conditions.addAll(
+                    getConditionsByType(ConditionType.ALERT, isInitial, variables, modifiedProperties)
+            );
+            conditions.addAll(
+                    getConditionsByType(ConditionType.OPTIONS, isInitial, variables, modifiedProperties)
+            );
+        }
 
         return conditions;
     }
