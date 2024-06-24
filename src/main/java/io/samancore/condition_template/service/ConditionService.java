@@ -32,26 +32,26 @@ public class ConditionService {
         var variables = conditionRequest.getVariables();
         fillVariables(variables);
         var modifiedProperties = conditionRequest.getModifiedProperties();
-        var isInitial = conditionRequest.isInitial();
+        var isEvalAll = conditionRequest.isEvalAll();
 
         conditions.addAll(
-                getConditionsByType(ConditionType.VALUE, isInitial, variables, modifiedProperties)
+                getConditionsByType(ConditionType.VALUE, isEvalAll, variables, modifiedProperties)
         );
         conditions.addAll(
-                getConditionsByType(ConditionType.VALIDATE, isInitial, variables, modifiedProperties)
+                getConditionsByType(ConditionType.VALIDATE, isEvalAll, variables, modifiedProperties)
         );
         if (conditionRequest.getWithoutPresentation() == null || !conditionRequest.getWithoutPresentation()) {
             conditions.addAll(
-                    getConditionsByType(ConditionType.VISIBLE, isInitial, variables, modifiedProperties)
+                    getConditionsByType(ConditionType.VISIBLE, isEvalAll, variables, modifiedProperties)
             );
             conditions.addAll(
-                    getConditionsByType(ConditionType.DISABLE, isInitial, variables, modifiedProperties)
+                    getConditionsByType(ConditionType.DISABLE, isEvalAll, variables, modifiedProperties)
             );
             conditions.addAll(
-                    getConditionsByType(ConditionType.ALERT, isInitial, variables, modifiedProperties)
+                    getConditionsByType(ConditionType.ALERT, isEvalAll, variables, modifiedProperties)
             );
             conditions.addAll(
-                    getConditionsByType(ConditionType.OPTIONS, isInitial, variables, modifiedProperties)
+                    getConditionsByType(ConditionType.OPTIONS, isEvalAll, variables, modifiedProperties)
             );
         }
 
@@ -63,13 +63,13 @@ public class ConditionService {
     }
 
     protected List<Condition> getConditionsByType(final ConditionType conditionType,
-                                                  final boolean isInitial,
+                                                  final boolean isEvalAll,
                                                   Map<String, Object> variables,
                                                   Set<String> modifiedProperties) {
         var conditions = new ArrayList<Condition>();
 
         List<String> dmnNameList;
-        if (isInitial) {
+        if (isEvalAll) {
             dmnNameList = graphUtil.getDmnNameDependencies(conditionType);
         } else {
             dmnNameList = graphUtil.getDmnNameDependencies(conditionType, modifiedProperties);
