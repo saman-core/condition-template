@@ -16,7 +16,6 @@ RUN chown 1001 /work \
 COPY --chown=1001:root target/*-runner /work/application
 COPY --chown=1001:root target/classes/undeleteme.txt /work/undeleteme.txt
 COPY --chown=1001:root target/classes/*.dmn /work/
-COPY --chown=1001:root .env /work/.env
 
 EXPOSE 8080
 USER 1001

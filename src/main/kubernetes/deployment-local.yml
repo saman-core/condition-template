@@ -1,0 +1,36 @@
+---
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  labels:
+    app: APP_NAME
+    version: v-APP_VERSION
+  name: APP_NAME
+  annotations:
+    deployHash: "DEPLOY_HASH"
+spec:
+  template:
+    metadata:
+      name: APP_NAME-APP_VERSION
+      annotations:
+        autoscaling.knative.dev/min-scale: "MIN_SCALE"
+    spec:
+      containers:
+        - image: CONTAINER_IMAGE
+          envFrom:
+            - configMapRef:
+                name: APP_NAME-deploy-secret
+          imagePullPolicy: IfNotPresent
+          name: APP_NAME
+          ports:
+            - containerPort: 8080
+              name: http1
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /work/certs
+              name: certs
+              readOnly: true
+      volumes:
+        - name: certs
+          secret:
+            secretName: certs
