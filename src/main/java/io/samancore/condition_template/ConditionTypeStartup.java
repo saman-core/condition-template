@@ -66,11 +66,15 @@ public class ConditionTypeStartup {
     protected List<String> returnAllDependencies(List<String> dmnNames) {
         var dependencies = new ArrayList<String>();
         dmnNames.forEach(dmnName -> {
-            DecisionModel decision = application.get(org.kie.kogito.decision.DecisionModels.class).getDecisionModel(namespace, dmnName);
-            var inputs = decision.getDMNModel().getInputs().stream()
-                    .map(DMNNode::getName)
-                    .toList();
-            dependencies.addAll(inputs);
+            try {
+                DecisionModel decision = application.get(org.kie.kogito.decision.DecisionModels.class).getDecisionModel(namespace.concat(dmnName), dmnName);
+                var inputs = decision.getDMNModel().getInputs().stream()
+                        .map(DMNNode::getName)
+                        .toList();
+                dependencies.addAll(inputs);
+            } catch (Exception e) {
+                log.warn(e.getMessage());
+            }
         });
         return dependencies;
     }
@@ -82,7 +86,7 @@ public class ConditionTypeStartup {
         dmnNames.stream()
                 .filter(dmnName -> isConditionDmn(dmnName, InstanceConstants.CONDITION_GRAPHS.get(type).getSuffix()))
                 .forEach(dmnName -> {
-                    DecisionModel decision = application.get(org.kie.kogito.decision.DecisionModels.class).getDecisionModel(namespace, dmnName);
+                    DecisionModel decision = application.get(org.kie.kogito.decision.DecisionModels.class).getDecisionModel(namespace.concat(dmnName), dmnName);
 
                     var propertyName = dmnName.substring(0, dmnName.length() - finalLength);
                     InstanceConstants.CONDITION_GRAPHS.get(type).getModels().put(propertyName, decision);
