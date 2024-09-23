@@ -1,6 +1,7 @@
 package io.samancore.condition_template;
 
 import io.quarkus.runtime.Startup;
+import io.samancore.condition_template.client.SystemTableWrapperClient;
 import io.samancore.condition_template.constant.InstanceConstants;
 import io.samancore.common.model.condition.ConditionType;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -22,11 +23,17 @@ import java.util.stream.Stream;
 
 @Startup
 @ApplicationScoped
-public class ConditionTypeStartup {
-    private static final Logger log = Logger.getLogger(ConditionTypeStartup.class);
+public class ConditionStartup {
+    private static final Logger log = Logger.getLogger(ConditionStartup.class);
 
     @ConfigProperty(name = "condition.namespace", defaultValue = "saman-core")
     String namespace;
+
+    @ConfigProperty(name = "api.url-prefix")
+    String urlPrefix;
+
+    @ConfigProperty(name = "api.url-suffix")
+    String urlSuffix;
 
     @Inject
     Application application;
@@ -34,6 +41,8 @@ public class ConditionTypeStartup {
     @PostConstruct
     public void init() {
         log.info("INIT ConditionTypeStartup");
+        SystemTableWrapperClient.urlPrefix = urlPrefix;
+        SystemTableWrapperClient.urlSuffix = urlSuffix;
         Stream<Path> paths = null;
         try {
             var url = Thread.currentThread().getContextClassLoader().getResource("undeleteme.txt");
