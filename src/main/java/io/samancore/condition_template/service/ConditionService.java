@@ -7,6 +7,7 @@ import io.samancore.common.model.condition.ConditionType;
 import io.samancore.condition_template.util.DmnUtil;
 import io.samancore.condition_template.util.GraphUtil;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -17,6 +18,7 @@ import java.util.Set;
 
 @ApplicationScoped
 public class ConditionService {
+    private static final Logger log = Logger.getLogger(ConditionService.class);
 
     @ConfigProperty(name = "condition.entry", defaultValue = "result")
     String entry;
@@ -76,14 +78,18 @@ public class ConditionService {
         }
 
         dmnNameList.forEach(dmnName -> {
-            var result = dmnUtil.execute(conditionType, dmnName, variables, entry);
-            var condition = createCondition(dmnName, conditionType, result);
-            if (condition.getValue() != null)
-                conditions.add(condition);
+            try {
+                var result = dmnUtil.execute(conditionType, dmnName, variables, entry);
+                var condition = createCondition(dmnName, conditionType, result);
+                if (condition.getValue() != null)
+                    conditions.add(condition);
 
-            if (InstanceConstants.CONDITION_GRAPHS.get(conditionType).isUpdateCascade()) {
-                variables.put(dmnName, result);
-                modifiedProperties.add(dmnName);
+                if (InstanceConstants.CONDITION_GRAPHS.get(conditionType).isUpdateCascade()) {
+                    variables.put(dmnName, result);
+                    modifiedProperties.add(dmnName);
+                }
+            } catch (Exception e) {
+                log.infof("ignore dmn: %s, Cause: %s", dmnName, e.getMessage());
             }
         });
         return conditions;
