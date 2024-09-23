@@ -78,18 +78,20 @@ public class ConditionService {
         }
 
         dmnNameList.forEach(dmnName -> {
+            Object result;
             try {
-                var result = dmnUtil.execute(conditionType, dmnName, variables, entry);
-                var condition = createCondition(dmnName, conditionType, result);
-                if (condition.getValue() != null)
-                    conditions.add(condition);
-
-                if (InstanceConstants.CONDITION_GRAPHS.get(conditionType).isUpdateCascade()) {
-                    variables.put(dmnName, result);
-                    modifiedProperties.add(dmnName);
-                }
+                result = dmnUtil.execute(conditionType, dmnName, variables, entry);
             } catch (Exception e) {
                 log.infof("ignore dmn: %s, Cause: %s", dmnName, e.getMessage());
+                result = null;
+            }
+            var condition = createCondition(dmnName, conditionType, result);
+            if (condition.getValue() != null)
+                conditions.add(condition);
+
+            if (InstanceConstants.CONDITION_GRAPHS.get(conditionType).isUpdateCascade()) {
+                variables.put(dmnName, result);
+                modifiedProperties.add(dmnName);
             }
         });
         return conditions;
