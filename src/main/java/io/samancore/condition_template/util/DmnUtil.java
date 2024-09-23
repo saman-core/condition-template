@@ -19,7 +19,7 @@ public class DmnUtil {
 
         if (decisionResult.hasErrors()) {
             log.error(decisionResult.toString());
-            throw new IllegalArgumentException();
+            return new Object();
         }
         return decisionResult.getContext().get(entry);
     }

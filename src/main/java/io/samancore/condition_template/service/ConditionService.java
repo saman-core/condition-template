@@ -78,13 +78,7 @@ public class ConditionService {
         }
 
         dmnNameList.forEach(dmnName -> {
-            Object result;
-            try {
-                result = dmnUtil.execute(conditionType, dmnName, variables, entry);
-            } catch (Exception e) {
-                log.infof("ignore dmn: %s, Cause: %s", dmnName, e.getMessage());
-                result = null;
-            }
+            var result = dmnUtil.execute(conditionType, dmnName, variables, entry);
             var condition = createCondition(dmnName, conditionType, result);
             if (condition.getValue() != null)
                 conditions.add(condition);
