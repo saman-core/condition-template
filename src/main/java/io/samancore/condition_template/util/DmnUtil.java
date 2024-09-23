@@ -19,7 +19,7 @@ public class DmnUtil {
 
         if (decisionResult.hasErrors()) {
             log.error(decisionResult.toString());
-            return new Object();
+            return null;
         }
         return decisionResult.getContext().get(entry);
     }

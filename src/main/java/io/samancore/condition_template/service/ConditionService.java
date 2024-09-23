@@ -80,7 +80,7 @@ public class ConditionService {
         dmnNameList.forEach(dmnName -> {
             var result = dmnUtil.execute(conditionType, dmnName, variables, entry);
             var condition = createCondition(dmnName, conditionType, result);
-            if (condition.getValue() != null)
+            if (condition.getValue() != null || conditionType == ConditionType.VALUE)
                 conditions.add(condition);
 
             if (InstanceConstants.CONDITION_GRAPHS.get(conditionType).isUpdateCascade()) {
