@@ -2,6 +2,10 @@ name: CI-CD-CONDITIONS-LOCAL
 on:
   workflow_dispatch:
     inputs:
+      module:
+        description: 'Module name'
+        required: true
+        type: string
       product:
         description: 'Product name'
         required: true
@@ -12,12 +16,13 @@ on:
         type: string
 
 env:
+  MODULE: ${{ inputs.module }}
   PRODUCT: ${{ inputs.product }}
   TEMPLATE: ${{ inputs.template }}
   REGISTRY: ghcr.io
   ACTOR: saman-core
-  IMAGE_APP_NAME: conditions-${{ inputs.product }}-${{ inputs.template }}
-  APP_NAME: conditions-${{ inputs.product }}-${{ inputs.template }}
+  IMAGE_APP_NAME: ${{ inputs.module }}-conditions-${{ inputs.product }}-${{ inputs.template }}
+  APP_NAME: ${{ inputs.module }}-conditions-${{ inputs.product }}-${{ inputs.template }}
   MIN_SCALE: 1
 
 jobs:
@@ -28,6 +33,7 @@ jobs:
     steps:
       - name: Log inputs
         run: |
+          echo "Module: $MODULE"
           echo "Product: $PRODUCT"
           echo "Template: $TEMPLATE"
 
@@ -52,7 +58,7 @@ jobs:
 
       - name: Copy files
         run: |
-          cp product-repository/products/$(echo $PRODUCT)/templates/$(echo $TEMPLATE)/conditions/* ./src/main/resources/ > /dev/null || true
+          cp product-repository/$(echo $MODULE)/products/$(echo $PRODUCT)/templates/$(echo $TEMPLATE)/conditions/* ./src/main/resources/ > /dev/null || true
           ls src/main/resources/
 
       - name: Setup graalvm
