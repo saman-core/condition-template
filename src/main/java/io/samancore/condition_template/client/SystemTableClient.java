@@ -1,11 +1,11 @@
 package io.samancore.condition_template.client;
 
 import io.quarkus.oidc.client.filter.OidcClientFilter;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import java.math.BigDecimal;
 import java.util.Map;
 

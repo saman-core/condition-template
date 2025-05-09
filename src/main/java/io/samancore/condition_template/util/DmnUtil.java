@@ -2,11 +2,11 @@ package io.samancore.condition_template.util;
 
 import io.samancore.condition_template.constant.InstanceConstants;
 import io.samancore.common.model.condition.ConditionType;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.jboss.logging.Logger;
 import org.kie.kogito.decision.DecisionModel;
 import org.kie.kogito.dmn.rest.DMNJSONUtils;
 
-import javax.enterprise.context.ApplicationScoped;
 import java.util.Map;
 
 @ApplicationScoped

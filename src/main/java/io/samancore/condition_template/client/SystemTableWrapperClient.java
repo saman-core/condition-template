@@ -1,7 +1,7 @@
 package io.samancore.condition_template.client;
 
 import io.quarkus.arc.Unremovable;
-import org.eclipse.microprofile.rest.client.RestClientBuilder;
+import io.quarkus.rest.client.reactive.QuarkusRestClientBuilder;
 import org.jboss.logging.Logger;
 
 import java.math.BigDecimal;
@@ -21,7 +21,7 @@ public class SystemTableWrapperClient {
         log.debug("SystemTableWrapperClient.fetchNumber");
         try {
             var url = generateUrl(systemTableName);
-            var conditionTemplateRestClient = RestClientBuilder.newBuilder()
+            var conditionTemplateRestClient = QuarkusRestClientBuilder.newBuilder()
                     .baseUri(URI.create(url))
                     .build(SystemTableClient.class);
             return conditionTemplateRestClient.singleNumber(systemTableProperty, conditions);
@@ -35,7 +35,7 @@ public class SystemTableWrapperClient {
         log.debug("SystemTableWrapperClient.fetchNumber");
         try {
             var url = generateUrl(systemTableName);
-            var conditionTemplateRestClient = RestClientBuilder.newBuilder()
+            var conditionTemplateRestClient = QuarkusRestClientBuilder.newBuilder()
                     .baseUri(URI.create(url))
                     .build(SystemTableClient.class);
             return conditionTemplateRestClient.singleString(systemTableProperty, conditions);

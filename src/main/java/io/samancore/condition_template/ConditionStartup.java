@@ -4,15 +4,15 @@ import io.quarkus.runtime.Startup;
 import io.samancore.condition_template.client.SystemTableWrapperClient;
 import io.samancore.condition_template.constant.InstanceConstants;
 import io.samancore.common.model.condition.ConditionType;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 import org.kie.dmn.api.core.ast.DMNNode;
 import org.kie.kogito.Application;
 import org.kie.kogito.decision.DecisionModel;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
